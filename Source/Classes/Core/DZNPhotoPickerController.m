@@ -23,6 +23,7 @@ static DZNPhotoPickerControllerCancellationBlock _cancellationBlock;
 @property (nonatomic, getter=isEditModeEnabled) BOOL editModeEnabled;
 @end
 
+
 @implementation DZNPhotoPickerController
 @synthesize delegate = _delegate;
 
