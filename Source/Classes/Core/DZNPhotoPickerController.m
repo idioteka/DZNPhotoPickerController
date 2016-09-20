@@ -127,7 +127,14 @@ static DZNPhotoPickerControllerCancellationBlock _cancellationBlock;
     if (self.title) controller.title = self.title;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPicker:)];
+        UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"CANCEL", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelPicker:)];
+        
+        [cancel setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                            [UIFont fontWithName:@"Avenir-Roman" size:14.0], NSFontAttributeName,
+                                            [UIColor colorWithRed:0.0/255.0 green:191.0/255.0 blue:255.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
+                                            nil] 
+                                  forState:UIControlStateNormal];
+       
         [controller.navigationItem setRightBarButtonItem:cancel];
     }
     

@@ -128,6 +128,14 @@ static NSUInteger kDZNPhotoDisplayMinimumColumnCount = 4.0;
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    // skipping to the next run loop, otherwise the keyboard does not appear
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.searchController.searchBar becomeFirstResponder];
+    });
+}
+
 
 #pragma mark - Getter methods
 
@@ -176,17 +184,29 @@ static NSUInteger kDZNPhotoDisplayMinimumColumnCount = 4.0;
         _searchController.searchResultsUpdater = self;
         _searchController.delegate = self;
         _searchController.dimsBackgroundDuringPresentation = YES;
-        _searchController.hidesNavigationBarDuringPresentation = YES;
+        _searchController.hidesNavigationBarDuringPresentation = NO;
 
         UISearchBar *searchBar = _searchController.searchBar;
         searchBar.placeholder = NSLocalizedString(@"Search", nil);
         searchBar.text = self.navigationController.initialSearchTerm;
-        searchBar.scopeButtonTitles = self.segmentedControlTitles;
         searchBar.searchBarStyle = UISearchBarStyleProminent;
+        searchBar.showsCancelButton = NO;
         searchBar.barStyle = UIBarStyleDefault;
         searchBar.selectedScopeButtonIndex = 0;
         searchBar.clipsToBounds = NO;
         searchBar.delegate = self;
+
+        UITextField *searchField;
+        NSUInteger numViews = [searchBar.subviews[0].subviews count];
+        for(int i = 0; i < numViews; i++) {
+            if([[searchBar.subviews[0].subviews objectAtIndex:i] isKindOfClass:[UITextField class]]) { //conform?
+                searchField = [searchBar.subviews[0].subviews objectAtIndex:i];
+            }
+        }
+        if(!(searchField == nil)) {
+            searchField.textColor = [UIColor colorWithRed:49.0/255.0 green:55.0/255.0 blue:63.0/255.0 alpha:1.0];
+            searchField.font = [UIFont fontWithName:@"Avenir-Roman" size:14.0];
+        }
     }
     return _searchController;
 }
